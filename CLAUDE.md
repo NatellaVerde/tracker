@@ -13,14 +13,14 @@ npm run preview  # Preview production build
 
 ## Architecture
 
-Single-page React app with no routing, no backend, and no persistence — all state lives in `src/App.jsx` via `useState`.
+Single-page React app with no routing, no backend, and no persistence.
 
-**Data model:** Each transaction has `{ id, description, amount, type, category, date }` where `type` is `"income"` or `"expense"` and `amount` is stored as a string (not a number).
+**Component tree:**
+- `App` — holds `transactions` state (array), passes it down to children
+  - `Summary` — receives `transactions`, computes `totalIncome`, `totalExpenses`, `balance` internally
+  - `TransactionForm` — owns its own form state, calls `onAdd(transaction)` prop to add to parent state
+  - `TransactionList` — receives `transactions`, owns filter state internally
 
-**Known issues (intentional for course purposes):**
-- `amount` is stored as a string, so arithmetic on totals is broken (string concatenation instead of addition)
-- `Freelance Work` is marked as `type: "expense"` in the seed data but its category is `"salary"`
-- No delete functionality
-- UI needs styling improvements
+**Data model:** Each transaction has `{ id, description, amount, type, category, date }` where `type` is `"income"` or `"expense"` and `amount` is a number.
 
-The app is a course starter project — bugs and rough edges are intentional teaching material.
+**Shared constant:** `categories` array is duplicated in `TransactionForm` and `TransactionList` — not yet extracted to a shared module.
