@@ -46,9 +46,11 @@ function TransactionList({ transactions, onDelete }) {
             <tr key={t.id}>
               <td>{t.date}</td>
               <td>{t.description}</td>
-              <td>{t.category}</td>
-              <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
-                {t.type === "income" ? "+" : "-"}${t.amount}
+              <td><span className="category-tag">{t.category}</span></td>
+              <td>
+                <span className={t.type === "income" ? "income-amount" : "expense-amount"}>
+                  {t.type === "income" ? "+" : "−"}${t.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </span>
               </td>
               <td>
                 <button className="delete-btn" onClick={() => {

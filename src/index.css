@@ -1,11 +1,13 @@
-* {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  font-family: 'Manrope', sans-serif;
+  background-color: #f8f5f0;
+  color: #1a1410;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }

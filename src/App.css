@@ -1,157 +1,497 @@
-.app {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+/* ============================================================
+   Design Tokens
+   ============================================================ */
+:root {
+  --bg-page:      #f8f5f0;
+  --bg-card:      #ffffff;
+  --bg-input:     #f3efe9;
+  --bg-hover:     #f0ece4;
+  --border-light: #ede7dc;
+  --border:       #ddd5c8;
+  --text-1:       #1a1410;
+  --text-2:       #7a6d60;
+  --text-3:       #a89888;
+  --income:       #16a34a;
+  --income-tint:  #f0fdf4;
+  --expense:      #ef4422;
+  --expense-tint: #fff5f2;
+  --blue:         #1d4ed8;
+  --blue-tint:    #eff6ff;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Manrope', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  --radius:    12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(26,20,16,0.06), 0 1px 2px rgba(26,20,16,0.04);
+  --shadow:    0 4px 16px rgba(26,20,16,0.08), 0 1px 4px rgba(26,20,16,0.04);
+  --shadow-md: 0 8px 28px rgba(26,20,16,0.10), 0 2px 8px rgba(26,20,16,0.05);
 }
 
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+.app {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 52px 32px 96px;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
 h1 {
-  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--text-1);
+  line-height: 1;
+  margin-bottom: 6px;
 }
 
 .subtitle {
-  margin-bottom: 20px;
-  color: #666;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-3);
+  margin-bottom: 44px;
+  padding-bottom: 44px;
+  border-bottom: 1.5px solid var(--border-light);
 }
 
+/* ============================================================
+   Summary Cards
+   ============================================================ */
 .summary {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .summary-card {
-  flex: 1;
-  border: 1px solid #ddd;
-  padding: 14px;
-  background: #fff;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 24px 22px 22px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.5s ease both;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.summary-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
 }
 
+/* Colored top-bar accent */
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.summary-card:nth-child(1) { animation-delay: 0.04s; }
+.summary-card:nth-child(1)::before { background: var(--income); }
+
+.summary-card:nth-child(2) { animation-delay: 0.10s; }
+.summary-card:nth-child(2)::before { background: var(--expense); }
+
+.summary-card:nth-child(3) { animation-delay: 0.16s; }
+.summary-card:nth-child(3)::before { background: var(--blue); }
+
 .summary-card h3 {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Colored dot beside label */
+.summary-card:nth-child(1) h3::before { background: var(--income); }
+.summary-card:nth-child(2) h3::before { background: var(--expense); }
+.summary-card:nth-child(3) h3::before { background: var(--blue); }
+
+.summary-card h3::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 7px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
 .income-amount {
-  color: green;
-  font-size: 20px;
-  font-weight: bold;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--income);
+  letter-spacing: -0.5px;
 }
 
 .expense-amount {
-  color: red;
-  font-size: 20px;
-  font-weight: bold;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--expense);
+  letter-spacing: -0.5px;
 }
 
 .balance-amount {
-  font-size: 20px;
-  font-weight: bold;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: -0.5px;
 }
 
-.add-transaction {
-  border: 1px solid #ddd;
-  padding: 16px;
-  margin-bottom: 24px;
-  background: #fff;
+.balance-amount.negative {
+  color: var(--expense);
 }
 
-.add-transaction h2 {
-  font-size: 16px;
-  margin-bottom: 12px;
-}
-
-form {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-form input,
-form select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-form input[type="text"] {
-  flex: 2;
-}
-
-form input[type="number"] {
-  flex: 1;
-}
-
-form select {
-  flex: 1;
-}
-
-form button {
-  padding: 8px 20px;
-  background: #333;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
+/* ============================================================
+   Chart Section
+   ============================================================ */
 .chart {
-  margin-bottom: 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 28px 28px 16px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s 0.24s ease both;
 }
 
 .chart h2 {
-  font-size: 16px;
-  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
 }
 
-.transactions {
+/* ============================================================
+   Add Transaction Form
+   ============================================================ */
+.add-transaction {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s 0.32s ease both;
+}
+
+.add-transaction h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
   margin-bottom: 24px;
+  letter-spacing: -0.3px;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.field input,
+.field select {
+  padding: 9px 12px;
+  background: var(--bg-input);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.18s, background 0.18s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.field input::placeholder {
+  color: var(--text-3);
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--blue);
+  background: var(--bg-card);
+}
+
+.field select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23a89888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: var(--bg-input);
+  padding-right: 32px;
+}
+
+.field select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%231d4ed8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-color: var(--bg-card);
+}
+
+.field select option {
+  background: #ffffff;
+  color: var(--text-1);
+}
+
+.field--submit {
+  padding-top: 17px;
+}
+
+.field--submit button {
+  width: 100%;
+  padding: 9px 22px;
+  background: var(--text-1);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.18s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.field--submit button:hover {
+  background: #2d2520;
+}
+
+.field--submit button:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================
+   Transactions List
+   ============================================================ */
+.transactions {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s 0.40s ease both;
 }
 
 .transactions h2 {
-  font-size: 16px;
-  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 20px;
+  letter-spacing: -0.3px;
 }
 
+/* ============================================================
+   Filters
+   ============================================================ */
 .filters {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .filters select {
-  padding: 6px;
-  border: 1px solid #ccc;
-  font-size: 13px;
+  padding: 6px 30px 6px 12px;
+  background: var(--bg-input);
+  border: 1.5px solid transparent;
+  border-radius: 100px;
+  color: var(--text-2);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23a89888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 0.18s, color 0.18s;
 }
 
+.filters select:focus,
+.filters select:hover {
+  border-color: var(--border);
+  color: var(--text-1);
+}
+
+.filters select option {
+  background: #ffffff;
+  color: var(--text-1);
+  border-radius: 0;
+}
+
+/* ============================================================
+   Table
+   ============================================================ */
 table {
   width: 100%;
   border-collapse: collapse;
 }
 
-thead {
-  background: #f5f5f5;
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
-}
-
 th {
-  font-size: 12px;
-  color: #888;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  padding: 8px 14px;
+  text-align: left;
+  border-bottom: 1.5px solid var(--border-light);
 }
 
-.delete-btn {
-  padding: 4px 10px;
-  background: #eee;
-  border: 1px solid #ccc;
-  cursor: pointer;
+td {
+  padding: 13px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.12s;
+}
+
+tbody tr:hover td {
+  background: var(--bg-hover);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+td:nth-child(1) {
+  font-family: var(--font-mono);
   font-size: 12px;
-  color: #333;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+
+td:nth-child(2) {
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+td .income-amount {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--income);
+  letter-spacing: -0.2px;
+}
+
+td .expense-amount {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--expense);
+  letter-spacing: -0.2px;
+}
+
+/* Category tag */
+.category-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--bg-input);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  color: var(--text-2);
+}
+
+/* ============================================================
+   Delete Button
+   ============================================================ */
+.delete-btn {
+  padding: 5px 12px;
+  background: transparent;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+}
+
+.delete-btn:hover {
+  border-color: var(--expense);
+  color: var(--expense);
+  background: var(--expense-tint);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 680px) {
+  .app {
+    padding: 28px 16px 64px;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .field:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .field--submit {
+    grid-column: 1 / -1;
+    padding-top: 0;
+  }
 }
