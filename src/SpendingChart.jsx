@@ -1,29 +1,23 @@
+import { useMemo } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { CATEGORY_LABELS } from './constants.js'
 
 const COLORS = ['#ef4422', '#16a34a', '#1d4ed8', '#d97706', '#7c3aed', '#0891b2', '#be185d'];
 
-const CATEGORY_LABELS = {
-  food: 'Food',
-  housing: 'Housing',
-  utilities: 'Utilities',
-  transport: 'Transport',
-  entertainment: 'Entertain.',
-  salary: 'Salary',
-  other: 'Other',
-};
-
 function SpendingChart({ transactions }) {
-  const expensesByCategory = transactions
-    .filter(t => t.type === 'expense')
-    .reduce((acc, t) => {
-      acc[t.category] = (acc[t.category] || 0) + t.amount;
-      return acc;
-    }, {});
+  const data = useMemo(() => {
+    const expensesByCategory = transactions
+      .filter(t => t.type === 'expense')
+      .reduce((acc, t) => {
+        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        return acc;
+      }, {});
 
-  const data = Object.entries(expensesByCategory).map(([name, value]) => ({
-    name: CATEGORY_LABELS[name] ?? name,
-    value,
-  }));
+    return Object.entries(expensesByCategory).map(([name, value]) => ({
+      name: CATEGORY_LABELS[name] ?? name,
+      value,
+    }));
+  }, [transactions]);
 
   if (data.length === 0) return null;
 

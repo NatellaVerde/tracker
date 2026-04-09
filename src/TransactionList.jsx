@@ -1,10 +1,10 @@
 import { useState } from 'react'
-
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
+import { categories } from './constants.js'
 
 function TransactionList({ transactions, onDelete }) {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [confirmId, setConfirmId] = useState(null);
 
   let filtered = transactions;
   if (filterType !== "all") {
@@ -49,13 +49,19 @@ function TransactionList({ transactions, onDelete }) {
               <td><span className="category-tag">{t.category}</span></td>
               <td>
                 <span className={t.type === "income" ? "income-amount" : "expense-amount"}>
-                  {t.type === "income" ? "+" : "−"}${t.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  {t.type === "income" ? "+" : "-"}${t.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </td>
               <td>
-                <button className="delete-btn" onClick={() => {
-                  if (window.confirm(`Delete "${t.description}"?`)) onDelete(t.id);
-                }}>Delete</button>
+                {confirmId === t.id ? (
+                  <>
+                    <button className="delete-btn" onClick={() => { onDelete(t.id); setConfirmId(null); }}>Yes</button>
+                    {' '}
+                    <button className="delete-btn" onClick={() => setConfirmId(null)}>No</button>
+                  </>
+                ) : (
+                  <button className="delete-btn" onClick={() => setConfirmId(t.id)}>Delete</button>
+                )}
               </td>
             </tr>
           ))}

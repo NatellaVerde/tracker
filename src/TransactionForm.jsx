@@ -1,6 +1,5 @@
 import { useState } from 'react'
-
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
+import { categories } from './constants.js'
 
 function TransactionForm({ onAdd }) {
   const [description, setDescription] = useState("");
@@ -10,7 +9,7 @@ function TransactionForm({ onAdd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!description || !amount) return;
+    if (!description || !amount || parseFloat(amount) <= 0) return;
 
     onAdd({
       id: Date.now(),
@@ -47,6 +46,8 @@ function TransactionForm({ onAdd }) {
             id="amount"
             type="number"
             placeholder="0.00"
+            min="0.01"
+            step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
